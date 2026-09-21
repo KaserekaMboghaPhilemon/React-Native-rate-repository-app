@@ -1,28 +1,22 @@
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, View } from "react-native";
-
-import theme from "../theme";
-import AppBar from "./AppBar";
+// src/components/Main.jsx
+import { StyleSheet, View } from "react-native";
 import RepositoryList from "./RepositoryList";
+import AppBar from "./AppBar";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.mainBackground,
-  },
-  content: {
-    flex: 1,
+    backgroundColor: "#e1e4e8",
   },
 });
 
-const Main = () => (
-  <SafeAreaView style={styles.container}>
-    <StatusBar style="light" />
-    <AppBar />
-    <View style={styles.content}>
+const Main = () => {
+  return (
+    <View style={styles.container}>
+      <AppBar />
       <RepositoryList />
     </View>
-  </SafeAreaView>
-);
+  );
+};
 
 export default Main;

@@ -1,4 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import Constants from "expo-constants";
 
 import theme from "../theme";
 
@@ -7,7 +8,8 @@ const tabs = ["Repositories", "Sign in"];
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.primary,
-    paddingVertical: 14,
+    paddingTop: Constants.statusBarHeight,
+    paddingBottom: 14,
   },
   tabs: {
     paddingHorizontal: 16,
