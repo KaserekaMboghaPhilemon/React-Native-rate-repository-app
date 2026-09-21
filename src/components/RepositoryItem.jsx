@@ -70,17 +70,25 @@ const Statistic = ({ value, label }) => (
   </View>
 );
 
-const RepositoryItem = ({ item }) => (
+const RepositoryItem = ({
+  fullName,
+  description,
+  language,
+  stargazersCount,
+  forksCount,
+  reviewCount,
+  ratingAverage,
+}) => (
   <View style={styles.container}>
     <View style={styles.details}>
-      <Text style={styles.fullName}>{item.fullName}</Text>
-      <Text style={styles.description}>{item.description}</Text>
-      <Text style={styles.language}>{item.language}</Text>
+      <Text style={styles.fullName}>{fullName}</Text>
+      <Text style={styles.description}>{description}</Text>
+      <Text style={styles.language}>{language}</Text>
       <View style={styles.statistics}>
-        <Statistic value={formatCount(item.stargazersCount)} label="Stars" />
-        <Statistic value={formatCount(item.forksCount)} label="Forks" />
-        <Statistic value={formatCount(item.reviewCount)} label="Reviews" />
-        <Statistic value={item.ratingAverage.toFixed(1)} label="Rating" />
+        <Statistic value={formatCount(stargazersCount)} label="Stars" />
+        <Statistic value={formatCount(forksCount)} label="Forks" />
+        <Statistic value={formatCount(reviewCount)} label="Reviews" />
+        <Statistic value={ratingAverage.toFixed(1)} label="Rating" />
       </View>
     </View>
   </View>
