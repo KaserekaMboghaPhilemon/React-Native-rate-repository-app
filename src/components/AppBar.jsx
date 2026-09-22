@@ -1,24 +1,17 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import Constants from "expo-constants";
+// src/components/AppBar.jsx
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useLocation } from "react-router-native";
-
+import Constants from "expo-constants";
+import AppBarTab from "./AppBarTab";
 import theme from "../theme";
-import AppBarTab from "./AppBarTab.jsx";
-
-const tabs = [
-  { title: "Repositories", to: "/" },
-  { title: "Sign in", to: "/signin" },
-];
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.primary,
     paddingTop: Constants.statusBarHeight,
-    paddingBottom: 14,
+    backgroundColor: theme.colors.appBarBackground || "#24292e",
   },
-  tabs: {
-    paddingHorizontal: 16,
-    gap: 24,
+  scrollView: {
+    flexDirection: "row",
   },
 });
 
@@ -27,19 +20,13 @@ const AppBar = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.tabs}
-      >
-        {tabs.map((tab) => (
-          <AppBarTab
-            key={tab.title}
-            title={tab.title}
-            to={tab.to}
-            active={pathname === tab.to}
-          />
-        ))}
+      <ScrollView horizontal style={styles.scrollView}>
+        <AppBarTab title="Repositories" to="/" isActive={pathname === "/"} />
+        <AppBarTab
+          title="Sign in"
+          to="/signin"
+          isActive={pathname === "/signin"}
+        />
       </ScrollView>
     </View>
   );

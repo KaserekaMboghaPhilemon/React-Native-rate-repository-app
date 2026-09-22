@@ -48,7 +48,7 @@ const RepositoryList = () => (
   <FlatList
     data={repositories}
     keyExtractor={(item) => item.id}
-    renderItem={({ item }) => <RepositoryItem {...item} />}
+    renderItem={({ item }) => <RepositoryItem item={item} />}
     contentContainerStyle={styles.list}
   />
 );
