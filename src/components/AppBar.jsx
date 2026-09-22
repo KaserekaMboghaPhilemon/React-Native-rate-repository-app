@@ -1,12 +1,14 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
-import { Link, useLocation } from "react-router-native";
+import { useLocation } from "react-router-native";
 
 import theme from "../theme";
 import AppBarTab from "./AppBarTab.jsx";
 
-const tabs = ["Repositories", "Sign in"];
-const paths = ["/", "/signin"];
+const tabs = [
+  { title: "Repositories", to: "/" },
+  { title: "Sign in", to: "/signin" },
+];
 
 const styles = StyleSheet.create({
   container: {
@@ -30,10 +32,13 @@ const AppBar = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.tabs}
       >
-        {tabs.map((tab, index) => (
-          <Link key={tab} to={paths[index]}>
-            <AppBarTab title={tab} active={pathname === paths[index]} />
-          </Link>
+        {tabs.map((tab) => (
+          <AppBarTab
+            key={tab.title}
+            title={tab.title}
+            to={tab.to}
+            active={pathname === tab.to}
+          />
         ))}
       </ScrollView>
     </View>

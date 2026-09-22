@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet } from "react-native";
+import { Link } from "react-router-native";
 
 import Text from "./Text";
 
@@ -14,21 +15,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const AppBarTab = ({ title, active = false, onPress }) => (
-  <Pressable
+const AppBarTab = ({ title, to, active = false }) => (
+  <Link
+    to={to}
+    component={Pressable}
     accessibilityRole="tab"
     accessibilityState={{ selected: active }}
-    onPress={onPress}
-    style={({ pressed }) => [
-      styles.tab,
-      active && styles.activeTab,
-      pressed && { opacity: 0.7 },
-    ]}
+    style={[styles.tab, active && styles.activeTab]}
   >
     <Text color="white" fontWeight="bold" fontSize="subheading">
       {title}
     </Text>
-  </Pressable>
+  </Link>
 );
 
 export default AppBarTab;
