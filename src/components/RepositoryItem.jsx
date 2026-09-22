@@ -1,16 +1,23 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
+import Text from "./Text";
 import theme from "../theme";
 
-const formatCount = (count) => count.toLocaleString("en-US");
+const formatCount = (count) =>
+  count >= 1000 ? `${(count / 1000).toFixed(1)}k` : count;
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.cardBackground,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.border,
-    padding: 16,
+    padding: 15,
     flexDirection: "row",
+  },
+  avatar: {
+    borderRadius: 28,
+    height: 56,
+    width: 56,
   },
   details: {
     flex: 1,
@@ -31,7 +38,7 @@ const styles = StyleSheet.create({
   },
   language: {
     alignSelf: "flex-start",
-    backgroundColor: theme.colors.languageTag,
+    backgroundColor: theme.colors.primary,
     borderRadius: 4,
     color: "#ffffff",
     fontFamily: theme.fontFamilies.medium,
@@ -43,8 +50,7 @@ const styles = StyleSheet.create({
   },
   statistics: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    maxWidth: 360,
+    justifyContent: "space-around",
   },
   statistic: {
     alignItems: "center",
@@ -78,8 +84,10 @@ const RepositoryItem = ({
   forksCount,
   reviewCount,
   ratingAverage,
+  ownerAvatarUrl,
 }) => (
   <View style={styles.container}>
+    <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
     <View style={styles.details}>
       <Text style={styles.fullName}>{fullName}</Text>
       <Text style={styles.description}>{description}</Text>
@@ -88,7 +96,7 @@ const RepositoryItem = ({
         <Statistic value={formatCount(stargazersCount)} label="Stars" />
         <Statistic value={formatCount(forksCount)} label="Forks" />
         <Statistic value={formatCount(reviewCount)} label="Reviews" />
-        <Statistic value={ratingAverage.toFixed(1)} label="Rating" />
+        <Statistic value={formatCount(ratingAverage)} label="Rating" />
       </View>
     </View>
   </View>

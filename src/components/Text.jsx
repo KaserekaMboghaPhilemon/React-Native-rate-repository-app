@@ -6,8 +6,8 @@ const styles = StyleSheet.create({
   text: {
     color: theme.colors.textPrimary,
     fontSize: theme.fontSizes.body,
-    fontFamily: theme.fonts.main,
-    fontWeight: theme.fontWeights.normal,
+    fontFamily: theme.fontFamilies.regular,
+    fontWeight: "normal",
   },
   colorTextSecondary: {
     color: theme.colors.textSecondary,
@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
   },
   colorWhite: {
-    color: theme.colors.appBarText,
+    color: "#ffffff",
   },
   fontSizeSubheading: {
     fontSize: theme.fontSizes.subheading,
   },
   fontWeightBold: {
-    fontWeight: theme.fontWeights.bold,
+    fontWeight: "bold",
   },
 });
 
