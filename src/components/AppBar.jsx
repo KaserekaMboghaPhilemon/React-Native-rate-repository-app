@@ -1,9 +1,12 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import Constants from "expo-constants";
+import { Link, useLocation } from "react-router-native";
 
 import theme from "../theme";
+import AppBarTab from "./AppBarTab.jsx";
 
 const tabs = ["Repositories", "Sign in"];
+const paths = ["/", "/signin"];
 
 const styles = StyleSheet.create({
   container: {
@@ -15,38 +18,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 24,
   },
-  tab: {
-    minHeight: 28,
-    justifyContent: "center",
-  },
-  activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: "#ffffff",
-  },
-  tabText: {
-    color: "#ffffff",
-    fontFamily: theme.fontFamilies.medium,
-    fontSize: theme.fontSizes.subheading,
-  },
 });
 
-const AppBar = () => (
-  <View style={styles.container}>
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.tabs}
-    >
-      {tabs.map((tab, index) => (
-        <Pressable
-          key={tab}
-          style={[styles.tab, index === 0 && styles.activeTab]}
-        >
-          <Text style={styles.tabText}>{tab}</Text>
-        </Pressable>
-      ))}
-    </ScrollView>
-  </View>
-);
+const AppBar = () => {
+  const { pathname } = useLocation();
+
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.tabs}
+      >
+        {tabs.map((tab, index) => (
+          <Link key={tab} to={paths[index]}>
+            <AppBarTab title={tab} active={pathname === paths[index]} />
+          </Link>
+        ))}
+      </ScrollView>
+    </View>
+  );
+};
 
 export default AppBar;
