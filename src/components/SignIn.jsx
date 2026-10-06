@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 15,
     fontSize: theme.fontSizes.body,
-    fontFamily: theme.fontFamilies.regular,
+    fontFamily: theme.fonts.main,
   },
   inputError: {
     borderColor: "#d73a4a",
