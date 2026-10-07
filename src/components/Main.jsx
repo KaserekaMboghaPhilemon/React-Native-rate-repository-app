@@ -1,4 +1,5 @@
-import { Route, Routes, Navigate } from "react-native-react-router";
+import { View } from "react-native";
+import { Route, Routes, Navigate } from "react-router-native";
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 import AppBar from "./AppBar";

@@ -1,12 +1,10 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
-import Constants from "expo-constants";
 
-const apolloUri =
-  Constants.expoConfig?.extra?.apolloUri ?? Constants.manifest?.extra?.apolloUri;
+const apolloUri = process.env.EXPO_PUBLIC_APOLLO_URI;
 
 if (!apolloUri) {
   throw new Error(
-    "Apollo server URI is missing. Set extra.apolloUri in the Expo app config."
+    "Apollo server URI is missing. Set EXPO_PUBLIC_APOLLO_URI in the .env file."
   );
 }
 
