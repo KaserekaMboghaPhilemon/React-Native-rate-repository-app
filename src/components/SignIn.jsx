@@ -26,7 +26,6 @@ const SignIn = () => {
 
     try {
       const { data } = await signIn({ username, password });
-      console.log("Sign in result data:", data);
 
       if (data?.authenticate?.accessToken) {
         navigate("/");

@@ -1,20 +1,34 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
-const apolloUri = process.env.EXPO_PUBLIC_APOLLO_URI;
+const createApolloClient = (authStorage) => {
+  const apolloUri = process.env.EXPO_PUBLIC_APOLLO_URI;
 
-if (!apolloUri) {
-  throw new Error(
-    "Apollo server URI is missing. Set EXPO_PUBLIC_APOLLO_URI in the .env file."
-  );
-}
+  if (!apolloUri) {
+    throw new Error(
+      "Apollo server URI is missing. Set EXPO_PUBLIC_APOLLO_URI in the .env file."
+    );
+  }
 
-const httpLink = createHttpLink({
-  uri: apolloUri,
-});
+  const httpLink = createHttpLink({
+    uri: apolloUri,
+  });
 
-const apolloClient = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-});
+  const authLink = setContext(async (_, { headers }) => {
+    const accessToken = await authStorage.getAccessToken();
 
-export default apolloClient;
+    return {
+      headers: {
+        ...headers,
+        ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
+      },
+    };
+  });
+
+  return new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache(),
+  });
+};
+
+export default createApolloClient;
