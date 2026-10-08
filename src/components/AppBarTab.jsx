@@ -15,18 +15,36 @@ const styles = StyleSheet.create({
   },
 });
 
-const AppBarTab = ({ title, to, active = false }) => (
-  <Link
-    to={to}
-    component={Pressable}
-    accessibilityRole="tab"
-    accessibilityState={{ selected: active }}
-    style={[styles.tab, active && styles.activeTab]}
-  >
+const AppBarTab = ({ title, to, active = false, onPress }) => {
+  const content = (
     <Text color="white" fontWeight="bold" fontSize="subheading">
       {title}
     </Text>
-  </Link>
-);
+  );
+
+  if (onPress) {
+    return (
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="tab"
+        style={styles.tab}
+      >
+        {content}
+      </Pressable>
+    );
+  }
+
+  return (
+    <Link
+      to={to}
+      component={Pressable}
+      accessibilityRole="tab"
+      accessibilityState={{ selected: active }}
+      style={[styles.tab, active && styles.activeTab]}
+    >
+      {content}
+    </Link>
+  );
+};
 
 export default AppBarTab;
