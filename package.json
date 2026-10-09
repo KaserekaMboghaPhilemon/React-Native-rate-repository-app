@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "test": "jest"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
@@ -27,8 +28,13 @@
     "yup": "^1.7.1"
   },
   "private": true,
+  "jest": {
+    "preset": "jest-expo"
+  },
   "devDependencies": {
+    "@testing-library/react-native": "^14.1.0",
     "eslint": "^9.0.0",
-    "eslint-config-expo": "~57.0.2"
+    "eslint-config-expo": "~57.0.2",
+    "jest-expo": "~57.0.5"
   }
 }

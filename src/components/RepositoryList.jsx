@@ -1,12 +1,9 @@
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import useRepositories from "../hooks/useRepositories";
-import RepositoryItem from "./RepositoryItem";
+import RepositoryListContainer from "./RepositoryListContainer";
 import Text from "./Text";
 
 const styles = StyleSheet.create({
-  list: {
-    paddingVertical: 0,
-  },
   message: {
     alignItems: "center",
     padding: 20,
@@ -39,13 +36,9 @@ const RepositoryList = () => {
   }
 
   return (
-    <FlatList
-      data={repositories ? repositories.edges.map((edge) => edge.node) : []}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <RepositoryItem item={item} />}
-      contentContainerStyle={styles.list}
-      ListEmptyComponent={
-        <Text style={styles.messageText}>No repositories found.</Text>
+    <RepositoryListContainer
+      repositories={
+        repositories ? repositories.edges.map((edge) => edge.node) : []
       }
     />
   );
