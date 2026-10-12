@@ -20,13 +20,26 @@
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
+      },
+      "jsEngine": "jsc"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-status-bar"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "966e1bfa-45ce-4cda-8b76-4a96dcfd0f43"
+      }
+    },
+    "owner": "kaserekaphilemons-team",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/966e1bfa-45ce-4cda-8b76-4a96dcfd0f43"
+    }
   }
 }
