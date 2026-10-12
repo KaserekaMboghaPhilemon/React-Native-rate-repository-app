@@ -13,7 +13,21 @@ const styles = StyleSheet.create({
 
 const SingleRepository = () => {
   const { id } = useParams();
-  const { repository, loading, error } = useRepository(id);
+  const { repository, loading, error, fetchMore } = useRepository(id);
+
+  const handleFetchMore = () => {
+    if (!repository?.reviews?.pageInfo?.hasNextPage) {
+      return;
+    }
+
+    fetchMore({
+      variables: {
+        id,
+        after: repository.reviews.pageInfo.endCursor,
+        first: 4,
+      },
+    });
+  };
 
   if (loading && !repository) {
     return <Text>Loading repository...</Text>;
@@ -30,6 +44,8 @@ const SingleRepository = () => {
       data={reviews}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => <ReviewItem review={item} />}
+      onEndReached={handleFetchMore}
+      onEndReachedThreshold={0.5}
       ListHeaderComponent={
         <>
           <RepositoryItem item={repository} showGithubButton />
