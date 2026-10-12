@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepositoryListContainer = ({ repositories }) => {
+const RepositoryListContainer = ({ repositories, ListHeaderComponent }) => {
   const navigate = useNavigate();
 
   return (
@@ -26,6 +26,7 @@ const RepositoryListContainer = ({ repositories }) => {
         </Pressable>
       )}
       contentContainerStyle={styles.list}
+      ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={
         <Text style={styles.messageText}>No repositories found.</Text>
       }
