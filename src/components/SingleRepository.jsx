@@ -1,7 +1,15 @@
+import { FlatList, StyleSheet, View } from "react-native";
 import { useParams } from "react-router-native";
 import useRepository from "../hooks/useRepository";
 import RepositoryItem from "./RepositoryItem";
+import ReviewItem from "./ReviewItem";
 import Text from "./Text";
+
+const styles = StyleSheet.create({
+  separator: {
+    height: 10,
+  },
+});
 
 const SingleRepository = () => {
   const { id } = useParams();
@@ -15,7 +23,22 @@ const SingleRepository = () => {
     return <Text>Unable to load repository: {error.message}</Text>;
   }
 
-  return <RepositoryItem item={repository} showGithubButton />;
+  const reviews = repository?.reviews?.edges.map((edge) => edge.node) ?? [];
+
+  return (
+    <FlatList
+      data={reviews}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      ListHeaderComponent={
+        <>
+          <RepositoryItem item={repository} showGithubButton />
+          <View style={styles.separator} />
+        </>
+      }
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
+    />
+  );
 };
 
 export default SingleRepository;
