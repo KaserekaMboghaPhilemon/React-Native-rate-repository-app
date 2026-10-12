@@ -36,6 +36,11 @@ const AppBar = () => {
         {data?.me ? (
           <>
             <AppBarTab
+              title="My reviews"
+              to="/my-reviews"
+              active={pathname === "/my-reviews"}
+            />
+            <AppBarTab
               title="Create a review"
               to="/create-review"
               active={pathname === "/create-review"}
