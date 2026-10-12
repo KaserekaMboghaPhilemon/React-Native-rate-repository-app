@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, TextInput, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { useDebounce } from "use-debounce";
 import useRepositories from "../hooks/useRepositories";
 import RepositoryListContainer from "./RepositoryListContainer";
 import Text from "./Text";
@@ -37,12 +38,25 @@ const styles = StyleSheet.create({
   pickerContainer: {
     backgroundColor: "white",
   },
+  searchInput: {
+    backgroundColor: "white",
+    borderColor: "#a0a0a0",
+    borderRadius: 4,
+    borderWidth: 1,
+    margin: 10,
+    padding: 10,
+  },
 });
 
 const RepositoryList = () => {
   const [sortOption, setSortOption] = useState("latest");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
   const { repositories, loading, error } = useRepositories(
-    getVariables(sortOption)
+    {
+      ...getVariables(sortOption),
+      searchKeyword: debouncedSearchKeyword,
+    }
   );
 
   if (loading && !repositories) {
@@ -69,13 +83,24 @@ const RepositoryList = () => {
         repositories ? repositories.edges.map((edge) => edge.node) : []
       }
       ListHeaderComponent={
-        <View style={styles.pickerContainer}>
-          <Picker selectedValue={sortOption} onValueChange={setSortOption}>
-            <Picker.Item label="Latest repositories" value="latest" />
-            <Picker.Item label="Highest rated repositories" value="highest" />
-            <Picker.Item label="Lowest rated repositories" value="lowest" />
-          </Picker>
-        </View>
+        <>
+          <TextInput
+            value={searchKeyword}
+            onChangeText={setSearchKeyword}
+            placeholder="Search repositories"
+            style={styles.searchInput}
+          />
+          <View style={styles.pickerContainer}>
+            <Picker selectedValue={sortOption} onValueChange={setSortOption}>
+              <Picker.Item label="Latest repositories" value="latest" />
+              <Picker.Item
+                label="Highest rated repositories"
+                value="highest"
+              />
+              <Picker.Item label="Lowest rated repositories" value="lowest" />
+            </Picker>
+          </View>
+        </>
       }
     />
   );
