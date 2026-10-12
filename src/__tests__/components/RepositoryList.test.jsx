@@ -1,6 +1,10 @@
 import { render, screen } from "@testing-library/react-native";
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 import RepositoryListContainer from "../../components/RepositoryListContainer";
+
+jest.mock("react-router-native", () => ({
+  useNavigate: () => jest.fn(),
+}));
 
 describe("RepositoryList", () => {
   describe("RepositoryListContainer", () => {
