@@ -1,8 +1,16 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-native";
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
 import { GET_CURRENT_USER } from "../graphql/queries";
+import { DELETE_REVIEW } from "../graphql/mutations";
 import Text from "./Text";
 import theme from "../theme";
 
@@ -47,8 +55,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: theme.colors.primary,
     borderRadius: 4,
-    marginTop: 12,
+    flex: 1,
     padding: 12,
+  },
+  buttonRow: {
+    flexDirection: "row",
+    marginTop: 12,
+  },
+  viewButton: {
+    marginRight: 8,
+  },
+  deleteButton: {
+    backgroundColor: "#d32f2f",
   },
   buttonText: {
     color: "white",
@@ -58,10 +76,29 @@ const styles = StyleSheet.create({
 
 const MyReviews = () => {
   const navigate = useNavigate();
-  const { data, loading, error } = useQuery(GET_CURRENT_USER, {
+  const { data, loading, error, refetch } = useQuery(GET_CURRENT_USER, {
     variables: { includeReviews: true },
     fetchPolicy: "cache-and-network",
   });
+  const [deleteReview] = useMutation(DELETE_REVIEW);
+
+  const handleDelete = (id) => {
+    Alert.alert("Delete review", "Are you sure you want to delete this review?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await deleteReview({ variables: { id } });
+            await refetch();
+          } catch (deleteError) {
+            Alert.alert("Unable to delete review", deleteError.message);
+          }
+        },
+      },
+    ]);
+  };
 
   if (loading && !data) {
     return (
@@ -102,13 +139,22 @@ const MyReviews = () => {
               {format(new Date(item.createdAt), "dd MMM yyyy")}
             </Text>
             <Text>{item.text}</Text>
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => navigate(`/repository/${item.repository.id}`)}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>View repository</Text>
-            </Pressable>
+            <View style={styles.buttonRow}>
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => navigate(`/repository/${item.repository.id}`)}
+                style={[styles.button, styles.viewButton]}
+              >
+                <Text style={styles.buttonText}>View repository</Text>
+              </Pressable>
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => handleDelete(item.id)}
+                style={[styles.button, styles.deleteButton]}
+              >
+                <Text style={styles.buttonText}>Delete review</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       )}
