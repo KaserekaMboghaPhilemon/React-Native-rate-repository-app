@@ -34,20 +34,13 @@ A React Native application for browsing GitHub repositories and sharing reviews.
    cp .env.example .env
    ```
 
-   Set `EXPO_PUBLIC_APOLLO_URI` in `.env` to the API GraphQL endpoint. Use the address appropriate for where the app is running:
+   Start the API in its own terminal with `npm start` from `rate-repository-api`. For local development, Android emulators use `http://10.0.2.2:4000/graphql`. A physical phone must use your computer's LAN IPv4 address (both devices must be on the same network, and the computer firewall must allow port 4000):
 
    ```dotenv
-   # Web or iOS simulator
-   EXPO_PUBLIC_APOLLO_URI=http://localhost:4000/graphql
-
-   # Android emulator
-   # EXPO_PUBLIC_APOLLO_URI=http://10.0.2.2:4000/graphql
-
-   # Physical device: replace with your development computer's LAN IP
-   # EXPO_PUBLIC_APOLLO_URI=http://192.168.1.100:4000/graphql
+   EXPO_PUBLIC_APOLLO_URI=http://192.168.1.100:4000/graphql
    ```
 
-   Keep `.env` local and do not commit credentials or machine-specific settings.
+   Replace `192.168.1.100` with your computer's current LAN IPv4 address. Keep `.env` local and do not commit credentials or machine-specific settings.
 
 4. Start Expo:
 
@@ -55,7 +48,7 @@ A React Native application for browsing GitHub repositories and sharing reviews.
    npx expo start
    ```
 
-   To start a specific target, use `npx expo start --android`, `npx expo start --ios`, or `npx expo start --web`.
+   Scan the QR code using Expo Go while the phone and computer are on the same network. If the QR code does not open over LAN, use `npm run start:tunnel` instead; this tunnels Metro, but the phone must still be able to reach the API URL in `.env`. If it cannot reach your computer's LAN IP, set the development URI to the deployed API URL. To start a specific target, use `npx expo start --android`, `npx expo start --ios`, or `npx expo start --web`.
 
 ## Checks
 
@@ -66,7 +59,7 @@ npm test -- --runInBand
 
 ## EAS Update
 
-EAS Update publishes JavaScript and asset changes to an EAS Update branch. Configure the project and install a compatible development or preview build before publishing; Expo Go does not receive EAS Updates.
+EAS Update publishes JavaScript and asset changes to an EAS Update branch. Expo Go does not receive EAS Updates: install a compatible EAS build first. The update QR code opens an update, not an installable app; use the EAS Build installation link/QR to install the app.
 
 1. Sign in to Expo:
 
@@ -74,25 +67,27 @@ EAS Update publishes JavaScript and asset changes to an EAS Update branch. Confi
    npx eas-cli@latest login
    ```
 
-2. Initialize the EAS project and configure Updates (these commands add EAS project/update settings to the app):
+2. Initialize the EAS project if needed:
 
    ```sh
    npx eas-cli@latest init
-   npx eas-cli@latest update:configure
    ```
 
-3. Before publishing, configure `EXPO_PUBLIC_APOLLO_URI` for the EAS `production` environment with the URL of a deployed, publicly reachable GraphQL API. Do not publish an update that points to a local address such as `localhost` or a development computer's LAN IP.
+3. Before publishing, configure `EXPO_PUBLIC_APOLLO_URI` for the EAS `production` environment with the URL of a deployed, publicly reachable GraphQL API. Production builds and updates use that value (or the app's production API fallback), regardless of the local development URI. Do not publish an update that points to a local address such as `localhost` or a development computer's LAN IP.
 
-4. Publish an update to the `main` branch:
+4. Build and install the Android app once. The production profile creates an internal-install APK and uses the `main` update channel:
+
+   ```sh
+   npx eas-cli@latest build --platform android --profile production
+   ```
+
+   Scan the installation QR code from the completed build. This installed app can then receive updates from the `main` branch.
+
+5. Publish an update to the `main` branch:
 
    ```sh
    npx eas-cli@latest update --branch main --environment production --message "Exercise 10.28 submission"
    ```
 
-   The CLI may prompt for project or branch setup the first time. Review the selected project and branch before confirming. After publishing, capture the update QR code shown by the CLI or available in the Expo dashboard and replace the placeholder below.
-
-### EAS Update QR code
-
-Replace this placeholder with a screenshot of the QR code for the published update:
-
-![EAS Update QR code screenshot placeholder](./docs/eas-update-qr.png)
+   After publishing, the installed app receives the update on its next check. The update QR is not an Expo Go launch QR or an installation QR.
+![EAS Update QR Code](docs/eas-update-qr.png)
